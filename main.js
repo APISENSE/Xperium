@@ -1,7 +1,7 @@
 var loader = require('loader');
 var carbon = require('carbonfootprint');
 
-var data = loader.loadData('data-xperium/2014-01-13');
+var data = loader.loadData('data-xperium/2014-01-07.json');
 
 var totalDistance = 0;
 for (var i = 1; i < data.length; i++) {
