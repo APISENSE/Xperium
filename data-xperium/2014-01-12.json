@@ -1,0 +1,24 @@
+[
+  {
+    "header": {
+      "scriptVersion": 1.8,
+      "userId": "1d62ced10737cebe0b1723eddd3bb5c9"
+    },
+    "data": [
+      {
+        "timestamp": 1389554273000,
+        "lon": 2.94918748,
+        "speed": 0,
+        "accuracy": 145,
+        "lat": 50.59668361
+      },
+      {
+        "timestamp": 1389558481016,
+        "lon": 2.94953612,
+        "speed": 0,
+        "accuracy": 92,
+        "lat": 50.59623747
+      }
+    ]
+  }
+]

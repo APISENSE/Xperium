@@ -1,0 +1,45 @@
+[
+  {
+    "header": {
+      "scriptVersion": 1.8,
+      "userId": "1d62ced10737cebe0b1723eddd3bb5c9"
+    },
+    "data": [
+      {
+        "timestamp": 1389827386000,
+        "lon": 2.94898725,
+        "speed": 1,
+        "accuracy": 128,
+        "lat": 50.59590363
+      },
+      {
+        "timestamp": 1389827436000,
+        "lon": 2.94943774,
+        "speed": 0.25,
+        "accuracy": 75,
+        "lat": 50.59640423
+      },
+      {
+        "timestamp": 1389900306000,
+        "lon": 2.94927546,
+        "speed": 0,
+        "accuracy": 167,
+        "lat": 50.59693453
+      },
+      {
+        "timestamp": 1389905476000,
+        "lon": 2.94983584,
+        "speed": 1,
+        "accuracy": 149,
+        "lat": 50.59640329
+      },
+      {
+        "timestamp": 1389905533000,
+        "lon": 2.94929,
+        "speed": 2,
+        "accuracy": 114,
+        "lat": 50.59673788
+      }
+    ]
+  }
+]
