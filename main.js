@@ -10,8 +10,8 @@ for (var u = 0; u < data.length; u++) {
 	
 	// For each ride
 	data[u].forEach(function(ride, index) {
-		console.log('\nRide ' + index);
-		
+		console.log('\nRide ' + index + ' (Estimated type: ' + loader.estimateRideType(ride) + ')');
+
 		var totalDistance = 0;
 		var averageSpeed = 0;
 		
@@ -19,21 +19,20 @@ for (var u = 0; u < data.length; u++) {
 		for (var i = 1; i < coordinates.length; i++) {
 			var t_1 = coordinates[i - 1];
 			var t = coordinates[i];
-			
-			var acc = t.accuracy.toFixed(1);
-			if (acc > 150) {
-				console.log('Bad accuracy: ' + acc);
-			}
 
 			// compute distance
-			totalDistance += t_1.distance(t);
+			var dist = t_1.distance(t);
+			totalDistance += dist;
 			
 			// aggregate speeds
 			var speed = t_1.speed(t);
 			averageSpeed += speed;
 			
-			var date = new Date(t.timestamp).toISOString().match(/(\d{2}:\d{2}:\d{2})/)[1];
-			console.log('[' + date + '] ' + t.toString() + ' (' + speed.toFixed(1) + ' km/h)');
+			var date = new Date(t_1.timestamp).toISOString().match(/(\d{2}:\d{2}:\d{2})/)[1];
+			console.log('[' + date + '] ' + 
+				t_1.toString() + ' (' + t_1.accuracy + ') to ' + 
+				t.toString() + ' (' + t.accuracy + ')' + 
+				' (' + dist.toFixed(3) + ' km @ ' + speed.toFixed(1) + ' km/h)');
 		}
 		
 		console.log('Total distance: ' + totalDistance.toFixed(1) + ' km');
