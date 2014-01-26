@@ -12,18 +12,8 @@ console.log('Server started!');
 
 app.get('/map/:user', function(req, res) {
 	var userData = data[parseInt(req.params.user)];
-	var rideList = [];
-	
-	userData.forEach(function(ride) {
-		var coordinates = ride.getCoordinates();
-		coordinates.forEach(function(coord, index) {
-			coordinates[index] = coord.toString();
-		});
-		
-		rideList.push(coordinates);
-	});
-	
-    res.render('map.ejs', {data: rideList});
+
+    res.render('map.ejs', {data: userData});
 })
 .use(express.static(__dirname + '/public'))
 .use(function(req, res, next){

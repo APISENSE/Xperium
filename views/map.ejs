@@ -28,7 +28,7 @@
 				var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 20, attribution: osmAttrib});		
 
 				// start the map in South-East England
-				map.setView(new L.LatLng(50.59680845, 2.95091149), 12);
+				map.setView(new L.LatLng(50.6372, 3.0633), 12);
 				map.addLayer(osm);
 
 				addMarkers();
@@ -37,13 +37,46 @@
 			function addMarkers() {
 			<%
 				data.forEach(function(ride) {
-					%>
-					L.polyline([[<%= ride[0] %>]
-					<% 
-					for (var i = 1; i < ride.length; i++) {
-						%>,[<%= ride[i] %>]<%
+					// Choose the color of the path according of the speed
+					var color = 'blue';
+					var averageSpeed = ride.computeAverageSpeed();
+					if(averageSpeed > 50) {
+						color = 'red';
+					} else if(averageSpeed < 4) {
+						color = 'green';
 					}
-					%>]).addTo(map);
+					
+					// Build an array of coordinates to polyline()
+					var coordinates = ride.getCoordinates();
+					var latLonArray = [];
+			
+					/*
+					 * Build a array of all position and make markers 
+					 * to give some information about the current position (speed, etc.)
+					 */
+					coordinates.forEach(function(coord, index) {
+						var curCoord = [coord.latitude, coord.longitude];
+						
+						// Array construction
+						latLonArray.push(curCoord);
+						
+						// Compute informations
+						var curSpeed = 'unknown';
+						if(index > 0) {
+							curSpeed = coordinates[index - 1].speed(coordinates[index]).toFixed(1);
+						}
+						
+						// Adds a marker for each coordinate
+						%>
+						L.marker(<%= JSON.stringify(curCoord) %>).addTo(map)
+							.bindPopup('Speed: <%= curSpeed %> km/h');
+						<%
+					});
+					
+					// Draws the entire path from the previous array
+					%>
+					L.polyline(<%= JSON.stringify(latLonArray) %>, {color: '<%= color %>'}).addTo(map)
+				   		.bindPopup('Average speed: <%= averageSpeed %> km/h<br>Total distance: <%= ride.computeTotalDistance().toFixed(1) %> km');
 				    <%
 				});
 			%>
