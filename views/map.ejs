@@ -37,14 +37,6 @@
 			function addMarkers() {
 			<%
 				data.forEach(function(ride) {
-					// Choose the color of the path according of the speed
-					var color = 'blue';
-					var averageSpeed = ride.computeAverageSpeed();
-					if(averageSpeed > 50) {
-						color = 'red';
-					} else if(averageSpeed < 4) {
-						color = 'green';
-					}
 					
 					// Build an array of coordinates to polyline()
 					var coordinates = ride.getCoordinates();
@@ -61,7 +53,7 @@
 						latLonArray.push(curCoord);
 						
 						// Compute informations
-						var curSpeed = 'unknown';
+						var curSpeed = 0;
 						if(index > 0) {
 							curSpeed = coordinates[index - 1].speed(coordinates[index]).toFixed(1);
 						}
@@ -73,10 +65,28 @@
 						<%
 					});
 					
+					// Compute some metrics to display
+					var averageSpeed = ride.computeAverageSpeed().toFixed(1);
+					var maxSpeed = ride.computeMaxSpeed().toFixed(1);
+					var totalDistance = ride.computeTotalDistance().toFixed(3);
+					
+					// define path color
+					var color;
+					switch(ride.estimateRideType()) {
+						case 'Car':
+							color = 'red'; break;
+						case 'Walk':
+							color = 'green'; break;
+						default:
+							color = 'blue';
+					}
+					
 					// Draws the entire path from the previous array
 					%>
 					L.polyline(<%= JSON.stringify(latLonArray) %>, {color: '<%= color %>'}).addTo(map)
-				   		.bindPopup('Average speed: <%= averageSpeed %> km/h<br>Total distance: <%= ride.computeTotalDistance().toFixed(1) %> km');
+				   		.bindPopup('Total distance: <%= totalDistance %> km<br>\
+				   			Average speed: <%= averageSpeed %> km/h<br>\
+				   			Max speed: <%= maxSpeed %> km/h');
 				    <%
 				});
 			%>
