@@ -4,20 +4,52 @@
 		<meta charset="UTF-8">
 		<title></title>
 		<link rel="stylesheet" href="/libs/leaflet-0.7.2/leaflet.css" />
-		<style type="text/css">
-			#map{height:600px;}
-		</style>
+		<link rel="stylesheet" href="/map.css" />
 	</head>
-	<body onload="initmap();">
-	    <div id="map"></div>
+	<body>
+		<section>
+			<aside>
+				<h2>Your Carbon Footprint</h2>
+				<h3>Rides</h3>
+				<dl id="ridesList"></dl>
+				<div>
+					<h3>Total</h3>
+					<div id="carbonFootPrintTotal"></div>
+				</div>
+			</aside>
+			<article>
+				<div id="map"></div>
+			</article>
+		</section>
+		<script src="/libs/jquery-2.1.0.min.js"></script>
 		<script src="/libs/leaflet-0.7.2/leaflet.js"></script>
 		<script src="/libs/leaflet.polylineDecorator.min.js"></script>
 		<script type="text/javascript">
+		$(document).ready(function() {
+			var height = $(window).height();
+			$('article').height(height);
+			var titleHeight = $('aside h2').height() + 20; // 20px margin
+			var subTitleHeight = ($('aside h3').height() + 13) * 2; // 13px margin
+			var totalCarbonHeight = $('#carbonFootPrintTotal').height();
+			$('#ridesList').height(height - titleHeight - subTitleHeight - totalCarbonHeight - 80); // 10px margin
+
+			// total carbon footprint
+			var totalCarbon = 0.;
+
+			/*
+			 * Put points and draw rides
+			 */
 			var map;
 			var ajaxRequest;
 			var plotlist;
 			var plotlayers = [];
+			initmap();
 
+			// set the CFP
+			$('#carbonFootPrintTotal').text(totalCarbon.toFixed(1) + ' kg eq. CO₂');
+
+
+			//TODO put this somewhere else
 			function initmap() {
 				// set up the map
 				map = new L.Map('map');
@@ -69,13 +101,14 @@
 					var averageSpeed = ride.computeAverageSpeed().toFixed(1);
 					var maxSpeed = ride.computeMaxSpeed().toFixed(1);
 					var totalDistance = ride.computeTotalDistance().toFixed(3);
+					var carbonFootPrint = ride.computeCarbonFootprint().toFixed(1);
 					
 					// define path color
 					var color;
 					switch(ride.estimateRideType()) {
-						case 'Car':
+						case 'car':
 							color = 'red'; break;
-						case 'Walk':
+						case 'walk':
 							color = 'green'; break;
 						default:
 							color = 'blue';
@@ -86,12 +119,18 @@
 					L.polyline(<%= JSON.stringify(latLonArray) %>, {color: '<%= color %>'}).addTo(map)
 				   		.bindPopup('Total distance: <%= totalDistance %> km<br>\
 				   			Average speed: <%= averageSpeed %> km/h<br>\
-				   			Max speed: <%= maxSpeed %> km/h');
+				   			Max speed: <%= maxSpeed %> km/h<br>\
+				   			Carbon Footprint: <%= carbonFootPrint %> kg eq. CO₂');
+
+				   	totalCarbon += <%= carbonFootPrint %>;
+
+				   	// put rides details in the rides list balise
+				   	$('#ridesList').append('<dt><%= ride.estimateRideType() %></dt><dd>' + <%= carbonFootPrint %> + ' kg eq. CO₂</dd>');
 				    <%
 				});
 			%>
 			}
-			
+		});
 		</script>
 	</body>
 </html>
