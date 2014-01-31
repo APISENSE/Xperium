@@ -15,20 +15,29 @@ var express = require('express');
 var app = express();
 console.log('Server started!');
 
-app.get('/map/:file/:user', function(req, res) {
-	var file = parseInt(req.params.file);
-	var user = parseInt(req.params.user);
-	
-	var userData = [];
-	if (file >= data.length) {
-		throw 'Attribute error: this file reference doesn\'t exists';
-	} else if(user >= data[file].length) {
-		throw 'Attribute error: this user reference doesn\'t exists';
-	} else {
-		userData = data[file][user];
-	}
+app.get('/map/:user/:date', function(req, res) {
+	var user = req.params.user;
+	var date = req.params.date;
 
-    res.render('map.ejs', {data: userData});
+	if (!(user in data)) {
+		throw 'Attribute error: this user reference doesn\'t exists';
+	}
+	
+	if(!(date in data[user])) {
+		throw 'Attribute error: this date reference doesn\'t exists';
+	}
+	
+	usersId = [];
+	for(var id in data) {
+		usersId.push(id);
+	}
+	
+	userDays = [];
+	for(var date in data[user]) {
+		userDays.push(date);
+	}
+	
+    res.render('map.ejs', {users: usersId, days: userDays, data: data[user][date]});
 })
 .use(express.static(__dirname + '/public'))
 .use(function(req, res, next){
