@@ -72,6 +72,9 @@ body {
 .main .page-header {
   margin-top: 0;
 }
+.page-header {
+  text-align: right;
+}
 
 
 /*
@@ -90,4 +93,11 @@ body {
 }
 .placeholder img {
   border-radius: 50%;
+}
+
+/*
+ * Leaflet map
+ */
+#map{
+  height: 400px;
 }
