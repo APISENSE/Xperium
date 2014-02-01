@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html ng-app="CarbonFootprintCalculator">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Alexandre Bonhomme">
+
+    <title>Carbon Footprint - Dashboard</title>
+    <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="holderjs-style" type="text/css"></style>
+
+    <!-- Leaflet visualization -->
+    <link rel="stylesheet" href="/libs/leaflet-0.7.2/leaflet.css" />
+    <link rel="stylesheet" href="/dashboard.css" />
+  </head>
+  <body  ng-controller="mainController">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Carbon Footprint Calculator</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <form class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <select class="form-control" ng-model="user" ng-options="u.user for u in users"></select>
+            </div>
+            <div class="form-group">
+              <select class="form-control" ng-model="date" ng-options="d for d in user.dates"></select>
+            </div>
+            <button type="submit" class="btn btn-success" ng-click="getCarbonFootprint(user.user, date)">
+            	<span class="glyphicon glyphicon-tree-deciduous"></span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-4 col-md-3 sidebar">
+          <h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
+        </div>
+        <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
+          <div id="map-anchor" class="row placeholders">
+            <!-- Leaflet map visualization -->
+            <div id="map"></div>
+          </div>
+          <h2 class="sub-header">Reports</h2>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Vehicule</th>
+                  <th>Distance (Km)</th>
+                  <th>Emission (Kg eq. CO₂/Km)</th>
+                  <th>Total emission (Kg eq. CO₂)</th>
+                </tr>
+                <tr ng-repeat="ride in rides">
+                	<td></td>
+                	<td>{{ ride.type }}</td>
+                	<td>{{ ride.distance.toFixed(3) }}</td>
+                	<td>{{ (ride.emission/ride.distance).toFixed(2) }}</td>
+                	<td>{{ ride.emission.toFixed(1) }}</td>
+                </tr>
+              </thead>
+              <tbody id="rides-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+	<script src="/libs/jquery-2.1.0.min.js"></script>
+
+    <script src="/libs/bootstrap-3.1.0/bootstrap.min.js"></script>
+    <script src="/libs/bootstrap-3.1.0/docs.min.js"></script>
+
+    <script src="/libs/leaflet-0.7.2/leaflet.js"></script>
+    <script src="/libs/leaflet.polylineDecorator.min.js"></script>
+
+	<script src="/libs/angular-1.2.10.min.js"></script>
+    <script src="core.js"></script>
+  </body>
+</html>

@@ -21,41 +21,14 @@ app.configure(function() {
 	app.use(express.methodOverride()); 						// simulate DELETE and PUT
 })
 
-//XXX deprecated
-.get('/map/:user/:date', function(req, res) {
-	var user = req.params.user;
-	var date = req.params.date;
-
-	if (!(user in data)) {
-		throw 'Attribute error: this user reference doesn\'t exists';
-	}
-	
-	if(!(date in data[user])) {
-		throw 'Attribute error: this date reference doesn\'t exists';
-	}
-	
-	// users list
-	usersId = [];
-	for(var id in data) {
-		usersId.push(id);
-	}
-	
-	// days available for this user
-	userDays = [];
-	for(var day in data[user]) {
-		userDays.push(day);
-	}
-	
-    res.render('map.ejs', {users: usersId, days: userDays, data: data[user][date]});
-})
-
 /*
  * 
  * AngularJS Frontend
  * 
  */
 .get('/map', function(req, res) {
-	//TODO
+	// Load Angular template
+	res.sendfile('./public/index.html');
 })
 
 /*
