@@ -146,6 +146,7 @@
           
           // Compute some metrics to display
           var averageSpeed = ride.computeAverageSpeed().toFixed(1);
+          var averageAcceleration = ride.computeAverageAcceleration().toFixed(3);
           var maxSpeed = ride.computeMaxSpeed().toFixed(1);
           var totalDistance = ride.computeTotalDistance().toFixed(3);
           var carbonFootPrint = ride.computeCarbonFootprint().toFixed(1);
@@ -168,6 +169,7 @@
           L.polyline(<%= JSON.stringify(latLonArray) %>, {color: '<%= color %>'}).addTo(map)
               .bindPopup('Total distance: <%= totalDistance %> km<br>\
                 Average speed: <%= averageSpeed %> km/h<br>\
+                Average acceleration: <%= averageAcceleration %> m/s&sup2;<br>\
                 Max speed: <%= maxSpeed %> km/h<br>\
                 Carbon Footprint: <%= carbonFootPrint %> Kg eq. CO₂');
 
