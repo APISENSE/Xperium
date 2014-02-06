@@ -16,6 +16,16 @@ body {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
+.navbar-apisense{
+  background-color: #222;
+  border-color: #080808;
+}
+.navbar-apisense .navbar-brand{
+  color: #FF9024;
+}
+.navbar-apisense .navbar-brand:hover{
+  color: #FE7D00;
+}
 
 
 /*
@@ -100,4 +110,25 @@ body {
  */
 #map{
   height: 400px;
+  border-bottom: 2px solid #222;
+}
+
+/*
+ * QR Code
+ */
+#app-qr-code{
+  right:20px;
+  bottom:20px;
+  position:absolute;
+}
+#app-qr-code .qr-code-p{
+  text-align:right;
+  margin:0 20px -10px 0;
+  font-size:16px;
+}
+#app-qr-code .qr-code-img{
+  float:right;
+  width:200px;
+  height:200px;
+  margin-bottom:-20px;
 }

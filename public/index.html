@@ -9,6 +9,7 @@
     <meta name="author" content="Alexandre Bonhomme">
 
     <title>Carbon Footprint - Dashboard</title>
+    <link rel="stylesheet" href="jquery.ui.resizable.css">
     <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -23,7 +24,7 @@
   </head>
   <body  ng-controller="mainController">
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-apisense navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Carbon Footprint Calculator</a>
@@ -48,9 +49,13 @@
       <div class="row">
         <div class="col-sm-4 col-md-3 sidebar">
           <h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
-          <div style="right:20px;bottom:20px;position:absolute;">
-            <p style="text-align:right;margin:0 20px -10px 0;font-size:16px;"><a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a> <br />for collecting data</p>
-            <a href="http://download.apisense.fr/apps/Bee" target="_blank"><img style="float:right;width:200px;height:200px;margin-bottom:-20px;" src="images/app_qrcode.png" alt="Android application"></a>
+          <div id="app-qr-code">
+            <p class="qr-code-p">
+            	<a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a><br>for collecting data
+            </p>
+            <a href="http://download.apisense.fr/apps/Bee" target="_blank">
+            	<img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
+            </a>
           </div>
         </div>
         <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
@@ -85,6 +90,8 @@
     </div>
     
 	<script src="/libs/jquery-2.1.0.min.js"></script>
+	<script src="libs/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="ui.js"></script>
 
     <script src="/libs/bootstrap-3.1.0/bootstrap.min.js"></script>
     <script src="/libs/bootstrap-3.1.0/docs.min.js"></script>
