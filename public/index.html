@@ -47,21 +47,74 @@
 
     <div class="container-fluid">
       <div class="row">
+      	<!-- Side bar -->
         <div class="col-sm-4 col-md-3 sidebar">
-          <h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
-          <div id="app-qr-code">
-            <p class="qr-code-p">
-            	<a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a><br>for collecting data
-            </p>
-            <a href="http://download.apisense.fr/apps/Bee" target="_blank">
-            	<img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
-            </a>
-          </div>
+        	<h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
+        	<div class="row">
+        		<div class="col-md-2 progress-bar-header-img">
+        			<img src="/images/plane-icon.png" alt="plane-icon">
+        		</div>
+        		<div class="col-md-10">
+					<div class="progress">
+						<div class="progress-bar progress-bar-plane" role="progressbar" aria-valuenow="100" aria-	valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+        		<div class="col-md-2 progress-bar-header-img">
+        			<img src="/images/car-icon.png" alt="car-icon">
+        		</div>
+        		<div class="col-md-10">
+					<div class="progress">
+						<div class="progress-bar progress-bar-car" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+        		<div class="col-md-2 progress-bar-header-img">
+        			<img src="/images/bus-icon.png" alt="bus-icon">
+        		</div>
+        		<div class="col-md-10">
+					<div class="progress">
+						<div class="progress-bar progress-bar-bus" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+        		<div class="col-md-2 progress-bar-header-img">
+        			<img src="/images/train-icon.png" alt="train-icon">
+        		</div>
+        		<div class="col-md-10">
+					<div class="progress">
+						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+        		<div class="col-md-2 progress-bar-header-img">
+        			<img src="/images/walk-icon.png" alt="walk-icon">
+        		</div>
+        		<div class="col-md-10">
+					<div class="progress">
+						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+					</div>
+				</div>
+			</div>
+			<div id="app-qr-code">
+				<p class="qr-code-p">
+					<a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a><br>for collecting data
+				</p>
+				<a href="http://download.apisense.fr/apps/Bee" target="_blank">
+					<img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
+				</a>
+			</div>
         </div>
+        <!-- Main content -->
         <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
           <div id="map-anchor" class="row placeholders">
             <!-- Leaflet map visualization -->
             <div id="map"></div>
+            <div class="hresize"></div>
           </div>
           <h2 class="sub-header">Reports</h2>
           <div class="table-responsive">

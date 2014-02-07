@@ -109,8 +109,57 @@ body {
  * Leaflet map
  */
 #map{
+  height: 100%;
+}
+
+#map-anchor{
   height: 400px;
-  border-bottom: 2px solid #222;
+}
+.hresize{
+  width: 100%;
+  height: 8px;
+  background: url(images/handle-h.png) no-repeat center bottom;
+}
+
+/*
+ *
+ */
+#emission-scale{
+
+}
+li.plane{
+  background-color: #333;
+  width: 100%;
+}
+li.car{
+  background-color: red;
+  width: 65%;
+}
+li.bus{
+  background-color: red;
+  width: 22%;
+}
+li.train{
+  background-color: red;
+  width: 10%;
+}
+.progress{
+  margin-bottom: 5px;
+}
+.progress-bar-header-img{
+  text-align: right;
+}
+.progress-bar-plane{
+  background-color: #333;
+}
+.progress-bar-car{
+  background-color: #d9534f;
+}
+.progress-bar-bus{
+  background-color: #f0ad4e;
+}
+.progress-bar-train{
+  background-color: #5bc0de;
 }
 
 /*
