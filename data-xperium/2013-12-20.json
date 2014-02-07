@@ -1,0 +1,28 @@
+[
+  {
+    "header": {
+      "scriptVersion": 1.7,
+      "userId": "6f743d63a2f3735f0aa81d346f38212a"
+    },
+    "data": [
+      {
+        "lon": 2.94951758,
+        "speed": 0,
+        "accuracy": 141,
+        "lat": 50.59686056
+      },
+      {
+        "lon": 2.949501,
+        "speed": 0,
+        "accuracy": 136,
+        "lat": 50.59550372
+      },
+      {
+        "lon": 2.94940629,
+        "speed": 0,
+        "accuracy": 147,
+        "lat": 50.59657689
+      }
+    ]
+  }
+]

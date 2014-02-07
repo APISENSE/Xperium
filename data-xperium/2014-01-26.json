@@ -1,0 +1,31 @@
+[
+  {
+    "header": {
+      "userId": "1d62ced10737cebe0b1723eddd3bb5c9",
+      "scriptVersion": 1.8
+    },
+    "data": [
+      {
+        "timestamp": 1390714278000,
+        "lon": 2.94993472,
+        "accuracy": 84,
+        "speed": 0,
+        "lat": 50.59759078
+      },
+      {
+        "timestamp": 1390714333000,
+        "lon": 2.94973981,
+        "accuracy": 100,
+        "speed": 0,
+        "lat": 50.59712147
+      },
+      {
+        "timestamp": 1390714753000,
+        "lon": 2.94936962,
+        "accuracy": 115,
+        "speed": 0,
+        "lat": 50.5967149
+      }
+    ]
+  }
+]
