@@ -1,5 +1,5 @@
 $(function() {
 	$( "#map-anchor" ).resizable({
-      alsoResize: "#map"
-    });
+		handles: 's' // only bottom resize
+	});
 });
