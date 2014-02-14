@@ -9,7 +9,7 @@
     <meta name="author" content="Alexandre Bonhomme">
 
     <title>Carbon Footprint - Dashboard</title>
-    <link rel="stylesheet" href="jquery.ui.resizable.css">
+    <link rel="stylesheet" href="/jquery-ui.min.css">
     <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -20,6 +20,7 @@
 
     <!-- Leaflet visualization -->
     <link rel="stylesheet" href="/libs/leaflet-0.7.2/leaflet.css" />
+    <link rel="stylesheet" href="/iThing.min.css" type="text/css" />
     <link rel="stylesheet" href="/dashboard.css" />
   </head>
   <body  ng-controller="mainController">
@@ -46,76 +47,85 @@
     </div>
 
     <div class="container-fluid">
-      <div class="row">
-      	<!-- Side bar -->
-        <div class="col-sm-4 col-md-3 sidebar">
-        	<h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
-        	<div class="row">
-        		<div class="col-md-2 progress-bar-header-img">
-        			<img src="/images/plane-icon.png" alt="plane-icon">
-        		</div>
-        		<div class="col-md-10">
-					<div class="progress">
-						<div class="progress-bar progress-bar-plane" role="progressbar" aria-valuenow="100" aria-	valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-        		<div class="col-md-2 progress-bar-header-img">
-        			<img src="/images/car-icon.png" alt="car-icon">
-        		</div>
-        		<div class="col-md-10">
-					<div class="progress">
-						<div class="progress-bar progress-bar-car" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%"></div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-        		<div class="col-md-2 progress-bar-header-img">
-        			<img src="/images/bus-icon.png" alt="bus-icon">
-        		</div>
-        		<div class="col-md-10">
-					<div class="progress">
-						<div class="progress-bar progress-bar-bus" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%"></div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-        		<div class="col-md-2 progress-bar-header-img">
-        			<img src="/images/train-icon.png" alt="train-icon">
-        		</div>
-        		<div class="col-md-10">
-					<div class="progress">
-						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-        		<div class="col-md-2 progress-bar-header-img">
-        			<img src="/images/walk-icon.png" alt="walk-icon">
-        		</div>
-        		<div class="col-md-10">
-					<div class="progress">
-						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			</div>
-			<div id="app-qr-code">
-				<p class="qr-code-p">
-					<a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a><br>for collecting data
-				</p>
-				<a href="http://download.apisense.fr/apps/Bee" target="_blank">
-					<img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
-				</a>
-			</div>
+
+    	<!-- Side bar -->
+      <div class="col-sm-4 col-md-3 sidebar">
+      	<h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
+      	<div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/plane-icon.png" alt="plane-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-plane" role="progressbar" aria-valuenow="100" aria-	valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/car-icon.png" alt="car-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-car" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%"></div>
+  					</div>
+  				</div>
+  			</div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/bus-icon.png" alt="bus-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-bus" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%"></div>
+  					</div>
+  				</div>
         </div>
-        <!-- Main content -->
-        <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
-          <div id="map-anchor" class="row placeholders">
-            <!-- Leaflet map visualization -->
-            <div id="map"></div>
-            <div class="hresize"></div>
-          </div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/train-icon.png" alt="train-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
+  					</div>
+  				</div>
+  			</div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/walk-icon.png" alt="walk-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+  					</div>
+  				</div>
+  			</div>
+  			<div id="app-qr-code">
+  				<p class="qr-code-p">
+  					<a href="http://download.apisense.fr/apps/Bee" target="_blank">Android app</a><br>for collecting data
+  				</p>
+  				<a href="http://download.apisense.fr/apps/Bee" target="_blank">
+  					<img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
+  				</a>
+  			</div>
+      </div>
+
+      <!-- Main content -->
+      <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
+        <!-- Leaflet map visualization -->
+        <div id="map-anchor" class="row">
+          <div id="map"></div>
+          <div class="hresize"></div>
+        </div>
+        
+        <!-- Range slider -->
+        <div class="row">
+          <div id="slider"></div>
+        </div>
+
+        <!-- Statistics table -->
+        <div class="row">
           <h2 class="sub-header">Reports</h2>
           <div class="table-responsive">
             <table class="table table-striped">
@@ -141,18 +151,19 @@
         </div>
       </div>
     </div>
-    
-	<script src="/libs/jquery-2.1.0.min.js"></script>
-	<script src="libs/jquery-ui-1.9.2.custom.min.js"></script>
-	<script src="ui.js"></script>
+
+    <script src="/libs/jquery-2.1.0.min.js"></script>
+    <script src="/libs/jquery-ui-1.10.4.min.js"></script>
+    <script src="/libs/jQDateRangeSlider-min.js"></script>
+    <script src="/ui.js"></script>
 
     <script src="/libs/bootstrap-3.1.0/bootstrap.min.js"></script>
     <script src="/libs/bootstrap-3.1.0/docs.min.js"></script>
 
     <script src="/libs/leaflet-0.7.2/leaflet.js"></script>
     <script src="/libs/leaflet.polylineDecorator.min.js"></script>
-
-	<script src="/libs/angular-1.2.10.min.js"></script>
-    <script src="core.js"></script>
+    
+    <script src="/libs/angular-1.2.10.min.js"></script>
+    <script src="/core.js"></script>
   </body>
 </html>
