@@ -35,10 +35,7 @@
             <div class="form-group">
               <select class="form-control" ng-model="user" ng-options="u.user for u in users"></select>
             </div>
-            <div class="form-group">
-              <select class="form-control" ng-model="date" ng-options="d for d in user.dates"></select>
-            </div>
-            <button type="submit" class="btn btn-success" ng-click="getCarbonFootprint(user.user, date)">
+            <button type="submit" class="btn btn-success" ng-click="getCarbonFootprint(user.user)">
             	<span class="glyphicon glyphicon-tree-deciduous"></span>
             </button>
           </form>
@@ -121,7 +118,7 @@
         
         <!-- Range slider -->
         <div class="row">
-          <div id="slider"></div>
+          <div id="slider" ng-model="dates" cfc-dateslider></div>
         </div>
 
         <!-- Statistics table -->
