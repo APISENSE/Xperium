@@ -2,6 +2,8 @@
  * Node.js server mail class
  */
 
+var apisense = require('apisense');
+
 /*
  * Processing data
  */
@@ -17,8 +19,10 @@ var app = express();
 app.configure(function() {
 	app.use(express.static(__dirname + '/public')); 		// set the static files location /public/img will be /img for users
 	app.use(express.logger('dev')); 						// log every request to the console
-	app.use(express.bodyParser()); 							// pull information from html in POST
+	app.use(express.urlencoded()); 							// pull information from html in POST
+	app.use(express.json());
 	app.use(express.methodOverride()); 						// simulate DELETE and PUT
+	
 })
 
 /*
@@ -27,8 +31,7 @@ app.configure(function() {
  * 
  */
 .get('/map', function(req, res) {
-	// Load Angular template
-	res.sendfile('./public/index.html');
+	res.sendfile('public/index.html');
 })
 
 /*
@@ -40,23 +43,16 @@ app.configure(function() {
  * Return all users ID in JSON format
  */
 .get('/api/users', function(req, res) {
-	
-	// users list
-	users = [];
-	for(var id in data) {		
-		// days available for this user
-		dates = [];
-		for(var date in data[id]) {
-			dates.push(date);
-		}
-		
-		users.push({
-			"user": id,
-			"dates": dates
-		});
-	}
-	
-	res.json(users);
+	apisense.query('users.js', {}, function (err, resp, data) {
+        if (err) {
+        	console.log("error :" + err);
+        }
+
+        data = JSON.parse(data);
+        if(data.success) {
+	        res.json(data.success);
+        }
+    });
 })
 
 /**
@@ -80,19 +76,21 @@ app.configure(function() {
 /**
  * Return all user's rides for a given date in JSON format
  */
-.get('/api/:user/:date', function(req, res) {
+.get('/api/:user/:min/:max', function(req, res) {
 	var user = req.params.user;
-	var date = req.params.date;
+	var min = req.params.min;
+	var max = req.params.max;
 
-	if (!(user in data)) {
-		throw 'Attribute error: this user reference doesn\'t exists';
-	}
-	
-	if(!(date in data[user])) {
-		throw 'Attribute error: this date reference doesn\'t exists';
-	}
-	
-	res.json(data[user][date]);
+	apisense.query('rides.js', {user: user, min: min, max: max}, function (err, resp, data) {
+        if (err) {
+        	console.log("error :" + err);
+        }
+
+        data = JSON.parse(data);
+        if(data.success) {
+	        res.json(data.success);
+        }
+    });
 })
 
 /**
