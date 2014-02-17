@@ -31,7 +31,7 @@ app.configure(function() {
  * 
  */
 .get('/map', function(req, res) {
-	res.sendfile('public/index.html');
+	res.sendfile('public/app.html');
 })
 
 /*
