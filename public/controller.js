@@ -36,12 +36,8 @@ angular.module('CarbonFootprintCalculator', [])
 		var min = $scope.dates.min
 		  , max = $scope.dates.max;
 
-		$http.get('/api/' + user + '/' + min + '/' + max)
+		$http.get('/api/' + user + '/' + min.yyyymmdd() + '/' + max.yyyymmdd())
 			.success(function(data) {
-				console.log(data);
-
-				//TODO DEBUG
-
 				$scope.rides = data;
 
 				// compute footprint
@@ -53,7 +49,7 @@ angular.module('CarbonFootprintCalculator', [])
 				$scope.carbonFootprint = totalEmission.toFixed(1) + ' Kg eq. CO₂';
 
 				clearMap(map);
-				addContent(data);
+				addContent(map, data);
 			})
 			.error(function(data) {
 				console.log('Error: ' + data);
@@ -74,7 +70,7 @@ angular.module('CarbonFootprintCalculator', [])
 						days: 1
 					},
 					bounds:{
-					    min: new Date(2013, 11, 1),
+					    min: new Date(2013, 10, 02),
 					    max: new Date()
 					  },
 					defaultValues: {
@@ -89,9 +85,18 @@ angular.module('CarbonFootprintCalculator', [])
 			    });
 
 			    element.on('valuesChanged', function(e, data) {
+			    	// Update slider view
 			    	scope.$apply(function() {
 			    		ngModelCtrl.$setViewValue(data.values);
 			    	});
+
+			    	// No user selected
+			    	if (scope.user == undefined) {
+			    		return;
+			    	};
+			    	
+			    	// Update data
+			    	scope.getCarbonFootprint(scope.user.user);
 			    });
             });
         }
@@ -119,7 +124,7 @@ function clearMap(m) {
 /**
 * Look over the rides list and
 */
-function addContent(rides) {
+function addContent(map, rides) {
 	rides.forEach(function(ride) {
 		// Build an array of coordinates to polyline()
 		var latLonArray = [];
@@ -138,12 +143,14 @@ function addContent(rides) {
 		// define path color
 		var color;
 		switch(ride.type) {
+		case 'train':
+			color = 'blue'; break;
 		case 'car':
-		  color = 'red'; break;
+			color = 'red'; break;
 		case 'walking':
-		  color = 'green'; break;
+			color = 'green'; break;
 		default:
-		  color = 'blue';
+			color = 'gray';
 		}
 
 		/*

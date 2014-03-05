@@ -3,12 +3,7 @@
  */
 
 var apisense = require('apisense');
-
-/*
- * Processing data
- */
-var loader = require('loader');
-var data = loader.loadData('data-xperium');
+var RidesAdapter = require('rides_adapter');
 
 /*
  * Running server
@@ -56,24 +51,6 @@ app.configure(function() {
 })
 
 /**
- * Return all user's rides in JSON format
- */
-.get('/api/:user', function(req, res) {
-	var user = req.params.user;
-
-	if (!(user in data)) {
-		throw 'Attribute error: this user reference doesn\'t exists';
-	}
-	
-	var allRides = [];
-	for(var key in data[user]) {
-		allRides = allRides.concat(data[user][key]);
-    }
-	
-	res.json(allRides);
-})
-
-/**
  * Return all user's rides for a given date in JSON format
  */
 .get('/api/:user/:min/:max', function(req, res) {
@@ -86,9 +63,16 @@ app.configure(function() {
         	console.log("error :" + err);
         }
 
+        console.log(data);
         data = JSON.parse(data);
         if(data.success) {
-	        res.json(data.success);
+        	console.log(data.success);
+        	
+        	var adapter = new RidesAdapter(data.success);
+        	var rides = adapter.computeRides();
+        	console.log(rides);
+        	
+	        res.json(rides);
         }
     });
 })
