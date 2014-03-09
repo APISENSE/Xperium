@@ -25,12 +25,17 @@
   </head>
   <body  ng-controller="mainController">
 
-    <div class="navbar navbar-apisense navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-inverse navbar-apisense navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Carbon Footprint Calculator</a>
         </div>
         <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="#" data-toggle="modal" data-target="#about">About</a>
+            </li>
+          </ul>
           <form class="navbar-form navbar-right" role="form">
             <div class="form-group">
               <select class="form-control" ng-model="user" ng-options="u.user for u in users"></select>
@@ -39,6 +44,36 @@
             	<span class="glyphicon glyphicon-tree-deciduous"></span>
             </button>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- About popup -->
+    <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="aboutLabel">About Carbon Footprint Calculator</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Authors</h4>
+            <ul>
+                <li>Alexandre Bonhomme</li>
+                <li>Christophe Ribeiro</li>
+                <li>Nicolas Haderer</li>
+            </ul>
+
+            <h4>Partners</h4>
+            <div class="row">
+              <div class="col-md-6"><img src="images/logo-lille1.jpg" alt="Université Lille 1" class="img-responsive"></div>
+              <div class="col-md-6"><img src="images/logo-inria.png" alt="INRIA" class="img-responsive"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6"><img src="images/logo-microsoft.jpg" alt="Microsoft" class="img-responsive"></div>
+              <div class="col-md-6"><img src="images/logo-apisense.png" alt="APISENSE" class="img-responsive"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
