@@ -133,16 +133,16 @@
                 <tr>
                   <th>#</th>
                   <th>Transport</th>
-                  <th>Distance (km)</th>
-                  <th>Number of rides</th>
-                  <th>Total emission (kg eq. CO₂)</th>
+                  <th class="text-center">Distance (km)</th>
+                  <th class="text-center">Aggregated rides</th>
+                  <th class="text-center">Total emission (kg eq. CO₂)</th>
                 </tr>
-                <tr ng-repeat="ride in rides">
+                <tr ng-repeat="ride in aggRides">
                 	<td></td>
                 	<td>{{ ride.type }}</td>
-                	<td>{{ ride.distance.toFixed(3) }}</td>
-                	<td></td>
-                	<td>{{ ride.emission.toFixed(1) }}</td>
+                	<td class="text-center">{{ ride.distance.toFixed(3) }}</td>
+                	<td class="text-center">{{ ride.numberOfRides }}</td>
+                	<td class="text-center">{{ ride.emission.toFixed(1) }}</td>
                 </tr>
               </thead>
               <tbody id="rides-list"></tbody>

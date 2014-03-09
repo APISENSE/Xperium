@@ -40,12 +40,47 @@ angular.module('CarbonFootprintCalculator', [])
 			.success(function(data) {
 				$scope.rides = data;
 
-				// compute footprint
+				/* 
+				 * - Compute the global footprint
+				 * - Compute the global footprint per km
+				 * - Aggregate successive rides using the same transportation
+				 */
 				var totalEmission = 0.;
 				var totalDistance = 0.;
-				data.forEach(function (ride) {
+				$scope.aggRides = [];
+				data.forEach(function (ride, index) {
 					totalEmission += ride.emission;
 					totalDistance += ride.distance;
+
+					// aggregation
+					var prev = $scope.aggRides.length - 1;
+					if(prev >= 0) {
+
+						// same transportation
+						if($scope.aggRides[prev].type === ride.type) {
+							console.log(prev)
+							console.log($scope.aggRides[prev])
+							console.log(ride)
+
+							$scope.aggRides[prev].distance += ride.distance;
+							$scope.aggRides[prev].emission += ride.emission;
+							$scope.aggRides[prev].numberOfRides += 1;
+						} else {
+							$scope.aggRides.push({
+								type: ride.type,
+								distance: ride.distance,
+								emission: ride.emission,
+								numberOfRides: 1
+							});
+						}
+					} else {
+						$scope.aggRides.push({
+							type: ride.type,
+							distance: ride.distance,
+							emission: ride.emission,
+							numberOfRides: 1
+						});
+					}
 				});
 
 				$scope.carbonFootprint = totalEmission.toFixed(1) + ' kg eq. CO₂';
