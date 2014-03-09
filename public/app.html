@@ -128,7 +128,7 @@
         <div class="row">
           <h2 class="sub-header">Reports</h2>
           <div class="table-responsive">
-            <table class="table table-striped">
+            <table class="table table-striped table-condensed">
               <thead>
                 <tr>
                   <th>#</th>
@@ -137,7 +137,7 @@
                   <th class="text-center">Aggregated rides</th>
                   <th class="text-center">Total emission (kg eq. CO₂)</th>
                 </tr>
-                <tr ng-repeat="ride in aggRides">
+                <tr class="{{ ride.colorClass }}" ng-repeat="ride in aggRides">
                 	<td></td>
                 	<td>{{ ride.type }}</td>
                 	<td class="text-center">{{ ride.distance.toFixed(3) }}</td>

@@ -54,31 +54,32 @@ angular.module('CarbonFootprintCalculator', [])
 
 					// aggregation
 					var prev = $scope.aggRides.length - 1;
-					if(prev >= 0) {
+					if(prev >= 0 && $scope.aggRides[prev].type === ride.type) {
 
-						// same transportation
-						if($scope.aggRides[prev].type === ride.type) {
-							console.log(prev)
-							console.log($scope.aggRides[prev])
-							console.log(ride)
-
-							$scope.aggRides[prev].distance += ride.distance;
-							$scope.aggRides[prev].emission += ride.emission;
-							$scope.aggRides[prev].numberOfRides += 1;
-						} else {
-							$scope.aggRides.push({
-								type: ride.type,
-								distance: ride.distance,
-								emission: ride.emission,
-								numberOfRides: 1
-							});
-						}
+						$scope.aggRides[prev].distance += ride.distance;
+						$scope.aggRides[prev].emission += ride.emission;
+						$scope.aggRides[prev].numberOfRides += 1;
+						
 					} else {
+						// define path color
+						var colorClass;
+						switch(ride.type) {
+						case 'train':
+							colorClass = 'bg-table-train'; break;
+						case 'car':
+							colorClass = 'bg-table-car'; break;
+						case 'walking':
+							colorClass = 'bg-table-walking'; break;
+						default:
+							colorClass = '';
+						}
+
 						$scope.aggRides.push({
 							type: ride.type,
 							distance: ride.distance,
 							emission: ride.emission,
-							numberOfRides: 1
+							numberOfRides: 1,
+							colorClass: colorClass
 						});
 					}
 				});
@@ -152,8 +153,7 @@ function clearMap(m) {
 
         try {
             m.removeLayer(m._layers[i]);
-        }
-        catch(e) {
+        } catch(e) {
             console.log("problem with " + e + m._layers[i]);
         }
     }
@@ -164,18 +164,13 @@ function clearMap(m) {
 */
 function addContent(map, rides) {
 	rides.forEach(function(ride) {
-		// Build an array of coordinates to polyline()
-		var latLonArray = [];
-
 		/*
-		* Build a array of all position and make markers 
-		* to give some information about the current position (speed, etc.)
-		*/
+		 * Build a array of all position and make markers 
+		 * to give some information about the current position (speed, etc.)
+		 */
+		var latLonArray = [];
 		ride.coordinates.forEach(function(coord, index) {
-			var curCoord = [coord.latitude, coord.longitude];
-
-			// Array construction
-			latLonArray.push(curCoord);
+			latLonArray.push( L.latLng(coord.latitude, coord.longitude) );
 		});
 
 		// define path color
@@ -192,10 +187,11 @@ function addContent(map, rides) {
 		}
 
 		/*
-		* Draw line between each point
-		*/
-		L.polyline(latLonArray, {color: color}).addTo(map)
-		  .bindPopup('Total distance: '+ ride.distance.toFixed(3) +' km<br>\
+		 * Draw line between each point
+		 */
+		var p = L.polyline(latLonArray, {color: color})
+				 .addTo(map)
+		  		 .bindPopup('Total distance: '+ ride.distance.toFixed(3) +' km<br>\
 		    Average speed: '+ ride.averageSpeed.toFixed(1) +' km/h<br>\
 		    Average acceleration: '+ ride.averageAcc.toFixed(3) +' m/s&sup2;<br>\
 		    Max speed: '+ ride.maxSpeed.toFixed(1) +' km/h<br>\

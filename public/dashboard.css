@@ -11,7 +11,6 @@ body {
 /*
  * Global add-ons
  */
-
 .sub-header {
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
@@ -69,7 +68,6 @@ body {
 /*
  * Main content
  */
-
 .main {
   padding: 20px;
 }
@@ -161,13 +159,9 @@ body {
   border-top:10px solid #e1e1e8;
 }
 
-/*
- *
+/**
+ * Left legend
  */
-#emission-scale{
-
-}
-
 .progress{
   margin-bottom: 5px;
 }
@@ -185,6 +179,19 @@ body {
 }
 .progress-bar-train{
   background-color: #5bc0de;
+}
+
+/**
+ * Reports table
+ */
+.bg-table-car{
+  background-color: #f2dede;
+}
+.bg-table-train{
+  background-color: #d9edf7;
+}
+.bg-table-walking{
+  background-color: #dff0d8;
 }
 
 /*
