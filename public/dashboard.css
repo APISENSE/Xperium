@@ -21,7 +21,7 @@ body {
   border-color: #080808;
 }
 .navbar-apisense .navbar-brand{
-  color: #FF9024;
+  color: #FFA349;
 }
 .navbar-apisense .navbar-brand:hover{
   color: #FE7D00;
@@ -143,6 +143,8 @@ body {
 .ui-rangeSlider-bar{
   height: 15px;
   background: #f0ad4e;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .ui-rangeSlider-label{
   bottom: 28px;
