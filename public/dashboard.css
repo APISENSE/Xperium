@@ -213,3 +213,10 @@ body {
   height:200px;
   margin-bottom:-20px;
 }
+
+/*
+ * Alert popup
+ */
+.alert{
+  display: none;
+}

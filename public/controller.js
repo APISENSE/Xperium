@@ -40,6 +40,14 @@ angular.module('CarbonFootprintCalculator', [])
 			.success(function(data) {
 				$scope.rides = data;
 
+				// no rides
+				if(data.length <= 0) {
+					$(".alert").show();
+				} else {
+					console.log(data)
+					$(".alert").hide();
+				}
+
 				/* 
 				 * - Compute the global footprint
 				 * - Compute the global footprint per km
