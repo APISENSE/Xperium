@@ -42,11 +42,14 @@ angular.module('CarbonFootprintCalculator', [])
 
 				// compute footprint
 				var totalEmission = 0.;
+				var totalDistance = 0.;
 				data.forEach(function (ride) {
 					totalEmission += ride.emission;
+					totalDistance += ride.distance;
 				});
 
-				$scope.carbonFootprint = totalEmission.toFixed(1) + ' Kg eq. CO₂';
+				$scope.carbonFootprint = totalEmission.toFixed(1) + ' kg eq. CO₂';
+				$scope.carbonFootprintPerKm = (totalEmission/totalDistance).toFixed(2) + ' kg eq. CO₂ per km';
 
 				clearMap(map);
 				addContent(map, data);

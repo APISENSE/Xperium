@@ -47,7 +47,10 @@
 
     	<!-- Side bar -->
       <div class="col-sm-4 col-md-3 sidebar">
-      	<h1 class="page-header" id="carbon-footprint-total">{{ carbonFootprint }}</h1>
+      	<h1 class="page-header" id="carbon-footprint-total">
+          {{ carbonFootprint }}<br>
+          <small>{{ carbonFootprintPerKm }}</small>
+        </h1>
       	<div class="row">
       		<div class="col-md-2 progress-bar-header-img">
       			<img src="/images/plane-icon.png" alt="plane-icon">
@@ -129,16 +132,16 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Vehicule</th>
-                  <th>Distance (Km)</th>
-                  <th>Emission (Kg eq. CO₂/Km)</th>
-                  <th>Total emission (Kg eq. CO₂)</th>
+                  <th>Transport</th>
+                  <th>Distance (km)</th>
+                  <th>Number of rides</th>
+                  <th>Total emission (kg eq. CO₂)</th>
                 </tr>
                 <tr ng-repeat="ride in rides">
                 	<td></td>
                 	<td>{{ ride.type }}</td>
                 	<td>{{ ride.distance.toFixed(3) }}</td>
-                	<td>{{ (ride.emission/ride.distance).toFixed(2) }}</td>
+                	<td></td>
                 	<td>{{ ride.emission.toFixed(1) }}</td>
                 </tr>
               </thead>
