@@ -66,11 +66,8 @@ app.configure(function() {
         console.log(data);
         data = JSON.parse(data);
         if(data.success) {
-        	console.log(data.success);
-        	
         	var adapter = new RidesAdapter(data.success);
         	var rides = adapter.computeRides();
-        	console.log(rides);
         	
 	        res.json(rides);
         }
