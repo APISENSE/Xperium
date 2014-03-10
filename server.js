@@ -22,15 +22,6 @@ app.configure(function() {
 
 /*
  * 
- * AngularJS Frontend
- * 
- */
-.get('/map', function(req, res) {
-	res.sendfile('public/app.html');
-})
-
-/*
- * 
  * JSON API
  * 
  */
@@ -63,7 +54,6 @@ app.configure(function() {
         	console.log("error :" + err);
         }
 
-        console.log(data);
         data = JSON.parse(data);
         if(data.success) {
         	var adapter = new RidesAdapter(data.success);
@@ -72,6 +62,15 @@ app.configure(function() {
 	        res.json(rides);
         }
     });
+})
+
+/*
+ * 
+ * AngularJS Frontend
+ * 
+ */
+.get('/', function(req, res) {
+    res.sendfile('public/app.html');
 })
 
 /**
