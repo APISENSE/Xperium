@@ -36,14 +36,11 @@
               <a href="#" data-toggle="modal" data-target="#about">About</a>
             </li>
           </ul>
-          <form class="navbar-form navbar-right" role="form">
+          <div class="navbar-form navbar-right" role="form">
             <div class="form-group">
-              <select class="form-control" ng-model="user" ng-options="u.user for u in users"></select>
+              <select class="form-control" ng-model="user" ng-options="u.user for u in users" ng-change="getCarbonFootprint(user.user)"></select>
             </div>
-            <button type="submit" class="btn btn-success" ng-click="getCarbonFootprint(user.user)">
-            	<span class="glyphicon glyphicon-tree-deciduous"></span>
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

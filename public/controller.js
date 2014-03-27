@@ -8,12 +8,12 @@ angular.module('CarbonFootprintCalculator', [])
 	 * Get users list
 	 */
 	$http.get('/api/users')
-		.success(function(data) {
+		 .success(function(data) {
 			$scope.users = data;
-		})
-		.error(function(data) {
+		 })
+		 .error(function(data) {
 			console.log('Error: ' + data);
-		});
+		 });
 
 	/**
 	 * Set up the map

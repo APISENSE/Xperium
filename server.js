@@ -17,7 +17,6 @@ app.configure(function() {
 	app.use(express.urlencoded()); 							// pull information from html in POST
 	app.use(express.json());
 	app.use(express.methodOverride()); 						// simulate DELETE and PUT
-	
 })
 
 /*
@@ -32,6 +31,7 @@ app.configure(function() {
 	apisense.query('users.js', {}, function (err, resp, data) {
         if (err) {
         	console.log("error :" + err);
+            return;
         }
 
         data = JSON.parse(data);
@@ -52,6 +52,7 @@ app.configure(function() {
 	apisense.query('rides.js', {user: user, min: min, max: max}, function (err, resp, data) {
         if (err) {
         	console.log("error :" + err);
+            return;
         }
 
         data = JSON.parse(data);
