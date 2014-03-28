@@ -1,7 +1,12 @@
 $(function() {
-	$( "#map-anchor" ).resizable({
+	$("#map-anchor").resizable({
 		handles: 's' // only bottom resize
 	});
+
+	/*$("#displayClusters").bootstrapSwitch();
+	$(".bootstrap-switch-handle-on").css('font-size', '12px');
+	$(".bootstrap-switch-handle-off").css('font-size', '12px');
+	$(".bootstrap-switch-label").css('font-size', '12px');*/
 });
 
 Date.prototype.yyyymmdd = function() {

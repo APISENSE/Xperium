@@ -187,6 +187,27 @@ angular.module('CarbonFootprintCalculator', [])
             });
         }
     };
+})
+
+.directive('cfcBootstrapswitch', function() {
+    return {
+        restrict: 'A',
+        require : 'ngModel',
+        link : function ($scope, element, attrs, ngModelCtrl) {
+            $(function(){
+                element.bootstrapSwitch();
+                $(".bootstrap-switch-handle-on").css('font-size', '12px');
+				$(".bootstrap-switch-handle-off").css('font-size', '12px');
+				$(".bootstrap-switch-label").css('font-size', '12px');
+
+				// DO NOT WORK
+			    element.on('click', function(e, data) {
+			    	console.log(data)
+
+			    });
+            });
+        }
+    };
 });
 	
 /**
