@@ -26,6 +26,14 @@ angular.module('CarbonFootprintCalculator', [])
 		maxClusterRadius: 40
 	});
 
+	$http.get('/api/users')
+		.success(function(users) {
+			$scope.users = users;
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		});
+
 	/**
 	 * Update user list.
 	 *
@@ -136,7 +144,7 @@ angular.module('CarbonFootprintCalculator', [])
     return {
         restrict: 'A',
         require : 'ngModel',
-        link : function (scope, element, attrs, ngModelCtrl) {
+        link : function ($scope, element, attrs, ngModelCtrl) {
             $(function(){
                 element.dateRangeSlider({
 			    	arrows: false,
@@ -161,22 +169,20 @@ angular.module('CarbonFootprintCalculator', [])
 
 			    element.on('valuesChanged', function(e, data) {
 			    	// Update slider view
-			    	scope.$apply(function() {
+			    	$scope.$apply(function() {
 			    		ngModelCtrl.$setViewValue(data.values);
 			    	});
 
 			    	// update users list
-			    	scope.updateUsersList();
-			    	scope.user = scope.user
-			    	console.log(scope.user)
+			    	//$scope.updateUsersList();
 
 			    	// No user selected
-			    	if (scope.user == undefined) {
+			    	if ($scope.user == undefined) {
 			    		return;
 			    	};
 
 			    	// Update data
-			    	scope.getCarbonFootprint(scope.user.user);
+			    	$scope.getCarbonFootprint($scope.user.user);
 			    });
             });
         }
