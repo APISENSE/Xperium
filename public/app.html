@@ -9,7 +9,7 @@
     <meta name="author" content="Alexandre Bonhomme">
 
     <title>Carbon Footprint - Dashboard</title>
-    <link rel="stylesheet" href="/jquery-ui.min.css">
+    <link rel="stylesheet" href="/libs/css/jquery-ui.min.css">
     <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -20,7 +20,9 @@
 
     <!-- Leaflet visualization -->
     <link rel="stylesheet" href="/libs/leaflet-0.7.2/leaflet.css" />
-    <link rel="stylesheet" href="/iThing.min.css" type="text/css" />
+    <link rel="stylesheet" href="/libs/css/iThing.min.css" type="text/css" />
+    <link rel="stylesheet" href="/libs/css/MarkerCluster.css">
+    <link rel="stylesheet" href="/libs/css/MarkerCluster.Default.css">
     <link rel="stylesheet" href="/dashboard.css" />
   </head>
   <body  ng-controller="mainController">
@@ -202,6 +204,7 @@
 
     <script src="/libs/leaflet-0.7.2/leaflet.js"></script>
     <script src="/libs/leaflet.polylineDecorator.min.js"></script>
+    <script src="/libs/leaflet.markercluster.min.js"></script>
     
     <script src="/libs/angular-1.2.10.min.js"></script>
     <script src="/controller.js"></script>

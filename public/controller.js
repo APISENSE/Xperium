@@ -5,17 +5,6 @@ angular.module('CarbonFootprintCalculator', [])
 	$scope.formData = {};
 
 	/**
-	 * Get users list
-	 */
-	$http.get('/api/users')
-		 .success(function(data) {
-			$scope.users = data;
-		 })
-		 .error(function(data) {
-			console.log('Error: ' + data);
-		 });
-
-	/**
 	 * Set up the map
 	 */
 	var map = new L.Map('map');
@@ -28,6 +17,46 @@ angular.module('CarbonFootprintCalculator', [])
 	// start the map in Lille center
 	map.setView(new L.LatLng(50.6372, 3.0633), 12);
 	map.addLayer(osm);
+
+	/**
+	 * Init cluster variable
+	 */
+	map._markersClusterGroup = new L.MarkerClusterGroup({
+		singleMarkerMode: true,
+		maxClusterRadius: 40
+	});
+
+	/**
+	 * Update user list.
+	 *
+	 * Note: Definitely not the best solution, but it works
+	 */
+	$scope.updateUsersList = function() {
+		
+		var updateList = function(users) {
+			$scope.users = []
+			users.forEach(function(user) {
+
+				$http.get('/api/' + user.user + '/' + $scope.dates.min.yyyymmdd() + '/' + $scope.dates.max.yyyymmdd())
+					.success(function(data) {
+
+						// rides founds
+						if(data.length > 0) {
+							$scope.users.push(user);
+						}
+					})
+					.error(function(data) {
+						console.log('Error: ' + data);
+					});
+			});
+		};
+
+		$http.get('/api/users')
+			.success( updateList )
+			.error(function(data) {
+				console.log('Error: ' + data);
+			});	
+	}
 
 	/**
 	 * Get all rides and associate informations
@@ -44,7 +73,6 @@ angular.module('CarbonFootprintCalculator', [])
 				if(data.length <= 0) {
 					$(".alert").show();
 				} else {
-					console.log(data)
 					$(".alert").hide();
 				}
 
@@ -137,11 +165,16 @@ angular.module('CarbonFootprintCalculator', [])
 			    		ngModelCtrl.$setViewValue(data.values);
 			    	});
 
+			    	// update users list
+			    	scope.updateUsersList();
+			    	scope.user = scope.user
+			    	console.log(scope.user)
+
 			    	// No user selected
 			    	if (scope.user == undefined) {
 			    		return;
 			    	};
-			    	
+
 			    	// Update data
 			    	scope.getCarbonFootprint(scope.user.user);
 			    });
@@ -171,6 +204,9 @@ function clearMap(m) {
 * Look over the rides list and
 */
 function addContent(map, rides) {
+	map._markersClusterGroup.clearLayers()
+	//map._markersClusterGroup = new L.MarkerClusterGroup();
+
 	rides.forEach(function(ride) {
 		/*
 		 * Build a array of all position and make markers 
@@ -178,7 +214,10 @@ function addContent(map, rides) {
 		 */
 		var latLonArray = [];
 		ride.coordinates.forEach(function(coord, index) {
-			latLonArray.push( L.latLng(coord.latitude, coord.longitude) );
+			var latLng = L.latLng(coord.latitude, coord.longitude)
+			
+			latLonArray.push(latLng);
+			map._markersClusterGroup.addLayer(new L.Marker(latLng));
 		});
 
 		// define path color
@@ -205,4 +244,7 @@ function addContent(map, rides) {
 		    Max speed: '+ ride.maxSpeed.toFixed(1) +' km/h<br>\
 		    Carbon Footprint: '+ ride.emission.toFixed(1) +' Kg eq. CO₂');
 	});
+
+	// add custer layer
+	map.addLayer(map._markersClusterGroup);
 }
