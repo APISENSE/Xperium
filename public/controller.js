@@ -1,4 +1,4 @@
-angular.module('CarbonFootprintCalculator', [])
+angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 
 .controller('mainController', function($scope, $http) {
 
@@ -69,9 +69,10 @@ angular.module('CarbonFootprintCalculator', [])
 	/**
 	 * Get all rides and associate informations
 	 */
-	$scope.getCarbonFootprint = function(user) {
-		var min = $scope.dates.min
-		  , max = $scope.dates.max;
+	$scope.getCarbonFootprint = function() {
+		var user = $scope.user.user,
+			min  = $scope.dates.min,
+			max  = $scope.dates.max;
 
 		$http.get('/api/' + user + '/' + min.yyyymmdd() + '/' + max.yyyymmdd())
 			.success(function(data) {
@@ -131,12 +132,36 @@ angular.module('CarbonFootprintCalculator', [])
 				$scope.carbonFootprint = totalEmission.toFixed(1) + ' kg eq. CO₂';
 				$scope.carbonFootprintPerKm = (totalEmission/totalDistance).toFixed(2) + ' kg eq. CO₂ per km';
 
+				// Rides layer
 				clearMap(map);
 				addContent(map, data);
+
+				// Cluster layer
+				if( $scope.bClusters ) {
+					addClusters(map, data);
+				}
 			})
 			.error(function(data) {
 				console.log('Error: ' + data);
 			});
+	};
+
+	/**
+	 * Builds of clears the clusters layer
+	 * /!\ Should be called BEFORE getCarbonFootprint(), because of $scope.rides /!\
+	 */
+	$scope.toggleClusters = function() {
+		console.log($scope.bClusters);
+		
+		if($scope.rides == undefined) {
+			return;
+		}
+
+		if ($scope.bClusters) {
+			addClusters(map, $scope.rides);
+		} else {
+			map._markersClusterGroup.clearLayers();
+		}
 	};
 })
 
@@ -187,29 +212,8 @@ angular.module('CarbonFootprintCalculator', [])
             });
         }
     };
-})
-
-.directive('cfcBootstrapswitch', function() {
-    return {
-        restrict: 'A',
-        require : 'ngModel',
-        link : function ($scope, element, attrs, ngModelCtrl) {
-            $(function(){
-                element.bootstrapSwitch();
-                $(".bootstrap-switch-handle-on").css('font-size', '12px');
-				$(".bootstrap-switch-handle-off").css('font-size', '12px');
-				$(".bootstrap-switch-label").css('font-size', '12px');
-
-				// DO NOT WORK
-			    element.on('click', function(e, data) {
-			    	console.log(data)
-
-			    });
-            });
-        }
-    };
 });
-	
+
 /**
  * Clear all rides off the map
  */
@@ -228,12 +232,9 @@ function clearMap(m) {
 }
 
 /**
-* Look over the rides list and
-*/
+ * Look over the rides list and draw rides
+ */
 function addContent(map, rides) {
-	map._markersClusterGroup.clearLayers()
-	//map._markersClusterGroup = new L.MarkerClusterGroup();
-
 	rides.forEach(function(ride) {
 		/*
 		 * Build a array of all position and make markers 
@@ -241,10 +242,7 @@ function addContent(map, rides) {
 		 */
 		var latLonArray = [];
 		ride.coordinates.forEach(function(coord, index) {
-			var latLng = L.latLng(coord.latitude, coord.longitude)
-			
-			latLonArray.push(latLng);
-			map._markersClusterGroup.addLayer(new L.Marker(latLng));
+			latLonArray.push( L.latLng(coord.latitude, coord.longitude) );
 		});
 
 		// define path color
@@ -270,6 +268,25 @@ function addContent(map, rides) {
 		    Average acceleration: '+ ride.averageAcc.toFixed(3) +' m/s&sup2;<br>\
 		    Max speed: '+ ride.maxSpeed.toFixed(1) +' km/h<br>\
 		    Carbon Footprint: '+ ride.emission.toFixed(1) +' Kg eq. CO₂');
+	});
+}
+
+/**
+ * Looks over each rides and each coordinate to build a cluster layout.
+ * This pretty expensive, but simplest this way
+ */
+function addClusters(map, rides) {
+	map._markersClusterGroup.clearLayers();
+	//map._markersClusterGroup = new L.MarkerClusterGroup();
+
+	rides.forEach(function(ride) {
+
+		// Add marker for each coordinates
+		ride.coordinates.forEach(function(coord, index) {
+			var latLng = L.latLng(coord.latitude, coord.longitude)
+
+			map._markersClusterGroup.addLayer(new L.Marker(latLng));
+		});
 	});
 
 	// add custer layer

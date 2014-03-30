@@ -11,7 +11,6 @@
     <title>Carbon Footprint - Dashboard</title>
     <link rel="stylesheet" href="/libs/css/jquery-ui.min.css">
     <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
-    <link rel="stylesheet" href="/libs/css/bootstrap-switch.min.css" />
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -41,9 +40,8 @@
           </ul>
           <div class="navbar-form navbar-right" role="form">
             <div class="form-group">
-              <input id="displayClusters" ng-model="displayClusters" type="checkbox" data-label-text="Clusters" data-on-color="success" cfc-bootstrapswitch>
-
-              <select class="form-control" ng-model="user" ng-options="u.user for u in users" ng-change="getCarbonFootprint(user.user)"></select>
+              <button type="button" class="btn btn-warning" btn-checkbox ng-model="bClusters"  ng-change="toggleClusters()">Clusters</button>
+              <select class="form-control" ng-model="user" ng-options="u.user for u in users" ng-change="getCarbonFootprint()"></select>
             </div>
           </div>
         </div>
@@ -204,13 +202,13 @@
 
     <script src="/libs/bootstrap-3.1.0/bootstrap.min.js"></script>
     <script src="/libs/bootstrap-3.1.0/docs.min.js"></script>
-    <script src="/libs/bootstrap-switch.min.js"></script>
 
     <script src="/libs/leaflet-0.7.2/leaflet.js"></script>
     <script src="/libs/leaflet.polylineDecorator.min.js"></script>
     <script src="/libs/leaflet.markercluster.min.js"></script>
     
     <script src="/libs/angular-1.2.10.min.js"></script>
+    <script src="/libs/ui-bootstrap-buttons-tpls-0.10.0.min.js"></script>
     <script src="/controller.js"></script>
   </body>
 </html>
