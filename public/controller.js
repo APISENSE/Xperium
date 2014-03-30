@@ -26,14 +26,6 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 		maxClusterRadius: 40
 	});
 
-	$http.get('/api/users')
-		.success(function(users) {
-			$scope.users = users;
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-		});
-
 	/**
 	 * Update user list.
 	 *
@@ -70,11 +62,11 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 	 * Get all rides and associate informations
 	 */
 	$scope.getCarbonFootprint = function() {
-		var user = $scope.user.user,
+		var userId = $scope.userId,
 			min  = $scope.dates.min,
 			max  = $scope.dates.max;
 
-		$http.get('/api/' + user + '/' + min.yyyymmdd() + '/' + max.yyyymmdd())
+		$http.get('/api/' + userId + '/' + min.yyyymmdd() + '/' + max.yyyymmdd())
 			.success(function(data) {
 				$scope.rides = data;
 
@@ -151,8 +143,6 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 	 * /!\ Should be called BEFORE getCarbonFootprint(), because of $scope.rides /!\
 	 */
 	$scope.toggleClusters = function() {
-		console.log($scope.bClusters);
-		
 		if($scope.rides == undefined) {
 			return;
 		}
@@ -199,15 +189,15 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 			    	});
 
 			    	// update users list
-			    	//$scope.updateUsersList();
+			    	$scope.updateUsersList();
 
 			    	// No user selected
-			    	if ($scope.user == undefined) {
+			    	if ($scope.userId == undefined) {
 			    		return;
 			    	};
 
 			    	// Update data
-			    	$scope.getCarbonFootprint($scope.user.user);
+			    	$scope.getCarbonFootprint($scope.userId);
 			    });
             });
         }
