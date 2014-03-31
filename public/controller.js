@@ -5,18 +5,30 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 	$scope.formData = {};
 
 	/**
+	 * Layers
+	 */
+	var osm = new L.TileLayer(
+		'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			minZoom: 8, 
+			maxZoom: 20, 
+			attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		});
+
+	var ocm = new L.TileLayer(
+		'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
+			minZoom: 8, 
+			maxZoom: 20,
+			attribution: 'Map data &copy; <a href="http://www.opencyclemap.org">OpenCycleMap</a> contributors'
+		});
+
+	/**
 	 * Set up the map
 	 */
-	var map = new L.Map('map');
-
-	// create the tile layer with correct attribution
-	var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-	var osmAttrib='Map data © OpenStreetMap contributors';
-	var osm = new L.TileLayer(osmUrl, {minZoom: 8, maxZoom: 20, attribution: osmAttrib});   
-
-	// start the map in Lille center
-	map.setView(new L.LatLng(50.6372, 3.0633), 12);
-	map.addLayer(osm);
+	var map = new L.Map('map', {
+		center: new L.LatLng(50.6372, 3.0633),
+		zoom: 12,
+		layers:[ osm ]
+	});
 
 	/**
 	 * Init cluster variable
@@ -124,14 +136,9 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 				$scope.carbonFootprint = totalEmission.toFixed(1) + ' kg eq. CO₂';
 				$scope.carbonFootprintPerKm = (totalEmission/totalDistance).toFixed(2) + ' kg eq. CO₂ per km';
 
-				// Rides layer
+				// Rides layers and clusters layers
 				clearMap(map);
 				addContent(map, data);
-
-				// Cluster layer
-				if( $scope.bClusters ) {
-					addClusters(map, data);
-				}
 			})
 			.error(function(data) {
 				console.log('Error: ' + data);
@@ -139,18 +146,24 @@ angular.module('CarbonFootprintCalculator', ['ui.bootstrap.buttons'])
 	};
 
 	/**
-	 * Builds of clears the clusters layer
-	 * /!\ Should be called BEFORE getCarbonFootprint(), because of $scope.rides /!\
+	 * Show/hide the clusters layer
 	 */
 	$scope.toggleClusters = function() {
-		if($scope.rides == undefined) {
-			return;
-		}
-
 		if ($scope.bClusters) {
-			addClusters(map, $scope.rides);
+			map.addLayer(map._markersClusterGroup);
 		} else {
-			map._markersClusterGroup.clearLayers();
+			map.removeLayer(map._markersClusterGroup);
+		}
+	};
+
+	/**
+	 * Show/hide the OpenCycleMap layer
+	 */
+	$scope.toggleCycleMap = function() {
+		if ($scope.bCycleMap) {
+			map.addLayer(ocm);
+		} else {
+			map.removeLayer(ocm);
 		}
 	};
 })
@@ -225,6 +238,8 @@ function clearMap(m) {
  * Look over the rides list and draw rides
  */
 function addContent(map, rides) {
+	map._markersClusterGroup.clearLayers();
+
 	rides.forEach(function(ride) {
 		/*
 		 * Build a array of all position and make markers 
@@ -232,7 +247,10 @@ function addContent(map, rides) {
 		 */
 		var latLonArray = [];
 		ride.coordinates.forEach(function(coord, index) {
-			latLonArray.push( L.latLng(coord.latitude, coord.longitude) );
+			var latlng = L.latLng(coord.latitude, coord.longitude)
+
+			latLonArray.push( latlng );
+			map._markersClusterGroup.addLayer( new L.Marker(latlng) );
 		});
 
 		// define path color
@@ -259,26 +277,4 @@ function addContent(map, rides) {
 		    Max speed: '+ ride.maxSpeed.toFixed(1) +' km/h<br>\
 		    Carbon Footprint: '+ ride.emission.toFixed(1) +' Kg eq. CO₂');
 	});
-}
-
-/**
- * Looks over each rides and each coordinate to build a cluster layout.
- * This pretty expensive, but simplest this way
- */
-function addClusters(map, rides) {
-	map._markersClusterGroup.clearLayers();
-	//map._markersClusterGroup = new L.MarkerClusterGroup();
-
-	rides.forEach(function(ride) {
-
-		// Add marker for each coordinates
-		ride.coordinates.forEach(function(coord, index) {
-			var latLng = L.latLng(coord.latitude, coord.longitude)
-
-			map._markersClusterGroup.addLayer(new L.Marker(latLng));
-		});
-	});
-
-	// add custer layer
-	map.addLayer(map._markersClusterGroup);
 }
