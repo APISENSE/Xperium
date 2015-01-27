@@ -20,9 +20,9 @@ app.configure(function() {
 })
 
 /*
- * 
+ *
  * JSON API
- * 
+ *
  */
 /**
  * Return all users ID in JSON format
@@ -59,16 +59,16 @@ app.configure(function() {
         if(data.success) {
         	var adapter = new RidesAdapter(data.success);
         	var rides = adapter.computeRides();
-        	
+
 	        res.json(rides);
         }
     });
 })
 
 /*
- * 
+ *
  * AngularJS Frontend
- * 
+ *
  */
 .get('/', function(req, res) {
     res.sendfile('public/app.html');
