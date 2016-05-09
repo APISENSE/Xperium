@@ -7,7 +7,6 @@ body {
   padding-top: 50px;
 }
 
-
 /*
  * Global add-ons
  */
@@ -194,24 +193,8 @@ body {
   background-color: #dff0d8;
 }
 
-/*
- * QR Code
- */
-#app-qr-code{
-  right:20px;
-  bottom:20px;
-  position:absolute;
-}
-#app-qr-code .qr-code-p{
-  text-align:right;
-  margin:0 20px -10px 0;
-  font-size:16px;
-}
-#app-qr-code .qr-code-img{
-  float:right;
-  width:200px;
-  height:200px;
-  margin-bottom:-20px;
+.store-icon img {
+  width:95%;
 }
 
 /*
