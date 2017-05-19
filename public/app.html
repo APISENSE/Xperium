@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html ng-app="CarbonFootprintCalculator">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Alexandre Bonhomme">
+
+    <title>Carbon Footprint - Dashboard</title>
+    <link rel="stylesheet" href="/libs/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="/libs/bootstrap-3.1.0/bootstrap.min.css" />
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style id="holderjs-style" type="text/css"></style>
+
+    <!-- Leaflet visualization -->
+    <link rel="stylesheet" href="/libs/leaflet-0.7.2/leaflet.css" />
+    <link rel="stylesheet" href="/libs/css/iThing.min.css" type="text/css" />
+    <link rel="stylesheet" href="/libs/css/MarkerCluster.css">
+    <link rel="stylesheet" href="/libs/css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="/dashboard.css" />
+  </head>
+  <body  ng-controller="mainController">
+
+    <div class="navbar navbar-inverse navbar-apisense navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Carbon Footprint Calculator</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="#" data-toggle="modal" data-target="#about">About</a>
+            </li>
+          </ul>
+          <div class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <button type="button" class="btn btn-success" btn-checkbox ng-model="bCycleMap"  ng-change="toggleCycleMap()">Cycle paths</button>
+              <button type="button" class="btn btn-warning" btn-checkbox ng-model="bClusters"  ng-change="toggleClusters()">Clusters</button>
+              <select id="select-user" class="form-control" ng-model="userId" ng-options="u.user as u.user for u in users" ng-change="getCarbonFootprint()">
+                <option value="">-- Please select an user --</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- About popup -->
+    <div class="modal fade" id="about" tabindex="-1" role="dialog" aria-labelledby="aboutLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="aboutLabel">About Carbon Footprint Calculator</h4>
+          </div>
+          <div class="modal-body">
+            <h4>Authors</h4>
+            <ul>
+                <li>Alexandre Bonhomme</li>
+                <li>Christophe Ribeiro</li>
+                <li>Nicolas Haderer</li>
+            </ul>
+
+            <h4>Partners</h4>
+            <div class="row">
+              <div class="col-md-6"><img src="images/logo-lille1.jpg" alt="Université Lille 1" class="img-responsive"></div>
+              <div class="col-md-6"><img src="images/logo-inria.png" alt="INRIA" class="img-responsive"></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6"><img src="images/logo-microsoft.jpg" alt="Microsoft" class="img-responsive"></div>
+              <div class="col-md-6"><img src="images/logo-apisense.png" alt="APISENSE" class="img-responsive"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+    	<!-- Side bar -->
+      <div class="col-sm-4 col-md-3 sidebar">
+      	<h1 class="page-header" id="carbon-footprint-total">
+          {{ carbonFootprint }}<br>
+          <small>{{ carbonFootprintPerKm }}</small>
+        </h1>
+      	<div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/plane-icon.png" alt="plane-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-plane" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+  					</div>
+  				</div>
+  			</div>
+  			<div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/car-icon.png" alt="car-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-car" role="progressbar" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100" style="width: 65%"></div>
+  					</div>
+  				</div>
+  			</div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/bus-icon.png" alt="bus-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-bus" role="progressbar" aria-valuenow="22" aria-valuemin="0" aria-valuemax="100" style="width: 22%"></div>
+  					</div>
+  				</div>
+        </div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/train-icon.png" alt="train-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%"></div>
+  					</div>
+  				</div>
+  			</div>
+        <div class="row">
+      		<div class="col-md-2 progress-bar-header-img">
+      			<img src="/images/walk-icon.png" alt="walk-icon">
+      		</div>
+      		<div class="col-md-10">
+  					<div class="progress">
+  						<div class="progress-bar progress-bar-train" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+  					</div>
+  				</div>
+  			</div>
+			<hr/>
+			<div>
+				<div class="row">
+					<div class="col-md-12 text-center">
+						<h3>Get the application for your device:</h3>
+					</div>
+					<div class="col-md-6">
+						<p>
+						<a class="store-icon" target="_blank" href="https://play.google.com/store/apps/details?id=com.apisense.bee&amp;hl=fr&amp;utm_source=global_co&amp;utm_medium=prtnr&amp;utm_content=Mar2515&amp;utm_campaign=PartBadge&amp;pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png"></a>
+						</p>
+						<p>
+						<a class="store-icon" target="_blank" href="https://itunes.apple.com/fr/app/apisense-bee/id1062233352?mt=8&amp;ign-mpt=uo%3D4"><img alt="Get it on Google Play" src="http://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg"></a>
+						</p>
+					</div>
+					<div class="col-md-6">
+                        <img class="qr-code-img" src="images/app_qrcode.png" alt="Android application">
+					</div>
+				</div>
+            </div>
+      </div>
+
+      <!-- Main content -->
+      <div class="col-sm-8 col-sm-offset-3 col-md-9 col-md-offset-3 main">
+        <!-- Alert box -->
+        <div class="row">
+          <div class="alert alert-info fade in">
+            <h4 class="alert-title">We're sorry!</h4>
+            <p class="alert-content">There is no ride available for this user in this interval of day.</p>
+          </div>
+        </div>
+
+        <!-- Leaflet map visualization -->
+        <div id="map-anchor" class="row">
+          <div id="map"></div>
+          <div class="hresize"></div>
+        </div>
+        
+        <!-- Range slider -->
+        <div class="row">
+          <div id="slider" ng-model="dates" cfc-dateslider></div>
+        </div>
+
+        <!-- Statistics table -->
+        <div class="row">
+          <h2 class="sub-header">Reports</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Transport</th>
+                  <th class="text-center">Distance (km)</th>
+                  <th class="text-center">Aggregated rides</th>
+                  <th class="text-center">Total emission (kg eq. CO₂)</th>
+                </tr>
+                <tr class="{{ ride.colorClass }}" ng-repeat="ride in aggRides">
+                	<td></td>
+                	<td>{{ ride.type }}</td>
+                	<td class="text-center">{{ ride.distance.toFixed(3) }}</td>
+                	<td class="text-center">{{ ride.numberOfRides }}</td>
+                	<td class="text-center">{{ ride.emission.toFixed(1) }}</td>
+                </tr>
+              </thead>
+              <tbody id="rides-list"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/libs/jquery-2.1.0.min.js"></script>
+    <script src="/libs/jquery-ui-1.10.4.min.js"></script>
+    <script src="/libs/jQDateRangeSlider-min.js"></script>
+    <script src="/ui.js"></script>
+
+    <script src="/libs/bootstrap-3.1.0/bootstrap.min.js"></script>
+    <script src="/libs/bootstrap-3.1.0/docs.min.js"></script>
+
+    <script src="/libs/leaflet-0.7.2/leaflet.js"></script>
+    <script src="/libs/leaflet.markercluster.min.js"></script>
+    
+    <script src="/libs/angular-1.2.10.min.js"></script>
+    <script src="/libs/ui-bootstrap-buttons-tpls-0.10.0.min.js"></script>
+    <script src="/controller.js"></script>
+  </body>
+</html>
